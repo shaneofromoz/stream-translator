@@ -251,26 +251,25 @@ def cli():
     faster_whisper_args["device"] = args.pop("faster_whisper_device")
     faster_whisper_args["compute_type"] = args.pop("faster_whisper_compute_type")
 
-    if args['model'].endswith('.en'):
-        if args['model'] == 'large.en':
-            print("English model does not have large model, please choose from {tiny.en, small.en, medium.en}")
+ if args['model'].endswith('.en'):
+    if args['model'] == 'large.en':
+        print("Model bahasa Inggris tidak memiliki model besar, silakan pilih dari {tiny.en, small.en, medium.en}")
+        sys.exit(0)
+    if args['language'] != 'English' and args['language'] != 'en':
+        if args['language'] == 'auto':
+            print("Menggunakan model .en, mengatur bahasa dari auto ke Bahasa Inggris")
+            args['language'] = 'en'
+        else:
+            print("Model bahasa Inggris tidak dapat digunakan untuk mendeteksi bahasa selain bahasa Inggris, silakan pilih model non .en")
             sys.exit(0)
-        if args['language'] != 'English' and args['language'] != 'en':
-            if args['language'] == 'auto':
-                print("Using .en model, setting language from auto to English")
-                args['language'] = 'en'
-            else:
-                print("English model cannot be used to detect non english language, please choose a non .en model")
-                sys.exit(0)
 
-    if args['language'] == 'auto':
-        args['language'] = None
+if args['language'] == 'auto':
+    args['language'] = None
 
-    if args['beam_size'] == 0:
-        args['beam_size'] = None
+if args['beam_size'] == 0:
+    args['beam_size'] = None
 
-    main(url, faster_whisper_args=faster_whisper_args if use_faster_whisper else None, **args)
-
+main(url, faster_whisper_args=faster_whisper_args if use_faster_whisper else None, **args)
 
 if __name__ == '__main__':
     cli()
